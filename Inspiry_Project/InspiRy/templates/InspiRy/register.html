@@ -1,0 +1,44 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    {% tailwind_css %}
+</head>
+
+<body class='bg-gray-900' >
+    <div>
+        {% block content %}
+
+            {% include './navbar.html' %}
+
+        {% endblock %}
+    </div>
+    <div class='bg-gray-900 text-white justify-items-center'>
+        <h2 class='text-4xl m-2'>Register</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form class='justify-items-center bg-gray-800 p-4 rounded-md' method="post">
+            {% csrf_token %}
+            <label for="username">Username</label> <br/>
+            <input type="text" id="username" class='bg-gray-500 my-2' name="username" required><br/>
+            <label for="email">Email</label> <br/>
+            <input type="text" id="email" class='bg-gray-500 my-2' name="email" required><br/>
+            <label for="password">Password</label> <br/>
+            <input type="password" id="password" class='bg-gray-500 my-2' name="password" required><br/>
+            <label for="confirm_password">Confirm Password</label> <br/>
+            <input type="password" id="confirm_password" class='bg-gray-500 my-2' name="confirm_password" required><br/>
+            <button type="submit" class='bg-gray-400 m-2 px-12 py-1 rounded-md hover:bg-gray-600 flex'>Register</button>
+        </form>
+        <p> Already have an account? <a class="text-blue-400 hover:text-blue-500 " href="{% url 'login' %}" >Login</a></p>
+    </div>
+    
+</body>
+</html>

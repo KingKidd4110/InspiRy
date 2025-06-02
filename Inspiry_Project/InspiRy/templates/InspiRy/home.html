@@ -1,0 +1,69 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title>InspiRy</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		{% tailwind_css %}
+	</head>
+
+    <body id="home" class="bg-gray-900 font-serif leading-normal tracking-normal">
+
+        <!-- <div class="container bg-cyan-200">
+            <h2 class="text-center">It's Great, Just like you thought it!</h2>
+
+        </div> -->
+		<div class="container border-lime-300 rounded-md bg-transparent border-double m-2">
+			<p class="text-bold text-white text-left text-3xl"> Latest Posts </p>
+
+		</div>
+
+		<div class="grid md:grid-cols-1 lg:grid-cols-3 border-lime-300 rounded-lg  bg-transparent gap-4 grid-flow-row mx-2">
+			{% comment %} <p class="text-white">{{ posts }}</p> {% endcomment %}
+
+			{% for post in posts %}
+
+				<p class="text-white">{{ post.title }}</p>
+				
+
+			{% comment %} <div  class=" container bg-gray-600 shadow-md rounded-lg hover:opacity-50 transform delay-100 sm:w-max">
+				<div class="">
+					<div class="container h-24 w-24 bg-slate-500 rounded-full">
+						
+					</div>
+					<i>@{{ post.user.username }}</i>
+					<h2 class="text-black text-2xl justify-center">{{ post.title }}</h2>
+			
+			    </div>
+				<div>
+					<p>{{post.content}}</p>
+				</div>
+				
+			</div> {% endcomment %}
+			{% empty %}
+				<P class="text-white">empty</p>
+			{% endfor %}
+			
+
+			<div id="userPost" class=" container bg-gray-600 shadow-md rounded-lg hover:opacity-50 transform delay-100 lg:h-48">
+				<div id="profilePicture" class="container h-24 w-24 bg-slate-500 rounded-full">
+
+				</div>
+			</div>
+
+			<div id="userPost" class=" container bg-gray-600 shadow-md rounded-lg hover:opacity-50 transform delay-100 lg:h-48">
+				<div id="profilePicture" class="container h-24 w-24 bg-slate-500 rounded-full">
+
+				</div>
+			</div>
+
+			
+		</div>
+
+
+	</body>
+
+</html>

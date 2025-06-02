@@ -1,0 +1,41 @@
+{% load static tailwind_tags %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    {% tailwind_css %}
+</head>
+<body class=" bg-gray-900 text-white">
+    <div>
+        {% block content %}
+
+            {% include './navbar.html' %}
+
+        {% endblock %}
+    </div>
+
+    <div id="login_form" class="justify-items-center">           
+        <h2 class=" bold text-2xl text-center my-2 ">Login</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form class='justify-items-center bg-gray-800 p-4 rounded-md' method="post">
+            {% csrf_token %}
+            <label for="username">Username</label> <br/>
+            <input type="text" id="username" class='bg-gray-500 m-2' name="username" required><br>
+            <label for="password">Password</label> <br/>
+            <input type="password" id="password" class='bg-gray-500 m-2' name="password" required><br>
+            <button type="submit" class='bg-gray-400 m-2 px-12 py-1 rounded-md hover:bg-gray-600 flex'>login</button>
+            <h2>Not Registered? Register  <a class="text-blue-400 hover:text-blue-500 " href="{% url 'register' %}" >HERE</a></h2>
+        </form>
+    </div>
+    
+</body>
+</html>
