@@ -1,0 +1,7 @@
+from django.forms import ModelForm
+from .models import Post, Comment
+
+class postForm(ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'user', 'post_image']

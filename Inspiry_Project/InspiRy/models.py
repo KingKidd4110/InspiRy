@@ -26,6 +26,9 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     post_image= models.ImageField(upload_to="media/posts/images", null=True, blank=True)
     
+    class Meta:
+        ordering = ['-created_at']
+    
     def __str__(self):
         return self.title
     

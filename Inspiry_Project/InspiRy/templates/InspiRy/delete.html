@@ -1,0 +1,28 @@
+{% load static tailwind_tags %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title>Welcome...</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		{% tailwind_css %}
+	</head>
+
+    <body class=" bg-gray-900 ">
+
+
+        {% block content %}
+
+        <form class='text-white' method="POST" action="">
+            {% csrf_token %}
+            <p>Are you sure you want to delete "{{obj}}"?</p>
+            <a href="{{request.META.HTTP_REFERER}}">Go back</a>
+            <input type="submit" value="Confirm" />
+
+        {% endblock content%}
+    </body>
+
+</html>

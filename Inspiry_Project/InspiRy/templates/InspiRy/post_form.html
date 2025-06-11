@@ -1,0 +1,48 @@
+{% load static tailwind_tags %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title>Welcome...</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		{% tailwind_css %}
+	</head>
+
+<section id='home'>
+
+    <body class=" bg-gray-900 ">
+        <div id="loading-screen" class="fixed inset-0 flex items-center justify-center bg-gray-900 z-50">
+            <div class="flex-col items-center">
+                <div class=" w-12 h-12 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+            </div>
+            <p class="bold m-3 text-white">Loading... </p>
+        </div>
+
+
+        <div id="main-content" class="hidden">
+            {% block content %}
+            
+                {% include './navbar.html' %}
+                <form method='POST' action="">
+                     {% csrf_token %}
+                     {{form}}
+                     <input type="submit" value="Submit" />
+                </form>
+
+            {% endblock %}
+            
+        </div>
+
+        <script src="{% static 'InspiRy/js/loading.js' %}"></script>
+
+    </body>
+
+    </html>
+
+</section>
+
+    
+</html>

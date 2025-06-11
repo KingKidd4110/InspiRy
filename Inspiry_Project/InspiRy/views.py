@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from .forms import postForm
+from django.db.models import Q
 # from django.http import HttpResponse
 # from django.template import loader
  
@@ -11,17 +13,26 @@ from django.contrib import messages
 
 
 def testPage(request):
-    return render(request, 'InspiRy/base.html')
-
-def homePage(request):
     posts = Post.objects.all()
     
-    return render(request, 'InspiRy/home.html', {'posts':posts})
+    comments = Comment.objects.all()
+    context = {'posts':posts, 'comments': comments}
+    return render(request, 'InspiRy/base.html', context)
 
-def posts_page(request, pk):
-    post = Post.objects.get(id=pk)
-    context = {'post' : post}
-    return render(request, 'InspiRy/posts.html', context)
+def homePage(request):
+    return render(request, 'InspiRy/home.html')
+
+# def posts_page(request, pk):
+#     post = Post.objects.get(id=pk)
+#     context = {'post' : post}
+#     return render(request, 'InspiRy/posts.html', context)
+
+def postPage(request, pk):
+    post = Post.objects.select_related('user').get(id=pk)  # Fetch all fields, optimize user
+    return render(request, 'InspiRy/posts.html', {
+        'post': post,
+        'username': request.user.username if request.user.is_authenticated else 'Guest'
+    })
 
 def footerPage(request):
     return render(request, 'InspiRy/footer.html')
@@ -78,9 +89,33 @@ def register_view(request):
         user = authenticate(username=username, password=password)
         return redirect('/')
     
-    return render(request, 'Inspiry/register.html')  
+    return render(request, 'InspiRy/register.html')  
 
 # for post in Post.objects.all():
 #         print(post.title)
+
+def createPost(request):
+    form = postForm()
+    
+    if request.method == 'POST':
+        form = postForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('testPage')
+    
+    user = request.user.username
+    context = {'form': form, 'user': user}
+    return render(request, 'InspiRy/post_form.html', context)
+
+
+def deletePost(request, pk):
+    post = Post.objects.get(id=pk)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('testPage')
+    return render(request, 'InspiRy/delete.html', {'obj':post})
+    
+
         
 
