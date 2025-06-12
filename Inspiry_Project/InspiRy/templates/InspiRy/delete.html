@@ -13,16 +13,23 @@
 
     <body class=" bg-gray-900 ">
 
+        <div class='justify-items-center bg-gray-800 p-4 rounded-md m-4'>
 
-        {% block content %}
+            {% block content %}
 
-        <form class='text-white' method="POST" action="">
-            {% csrf_token %}
-            <p>Are you sure you want to delete "{{obj}}"?</p>
-            <a href="{{request.META.HTTP_REFERER}}">Go back</a>
-            <input type="submit" value="Confirm" />
+            <form class='text-white justify-items-center' method="POST" action="">
+                {% csrf_token %}
+                <p>Are you sure you want to delete "{{obj}}"?</p>
+                <a href="{{request.META.HTTP_REFERER}}">
+                    <span class='bg-gray-500 rounded-md p-2 m-2 hover:bg-gray-600'>
+                        Go back
+                    </span>
+                    </a>
+                <input class='bg-gray-500 hover:bg-gray-600 hover:cursor-pointer rounded-md p-2 m-2' type="submit" value="Confirm" />
 
-        {% endblock content%}
+            {% endblock content%}
+
+        </div>
     </body>
 
 </html>
