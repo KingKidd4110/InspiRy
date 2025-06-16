@@ -12,7 +12,15 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('register/', views.register_view, name='register'),
-    path('post_form/', views.createPost, name='createPost'),
+    
     path('delete/<str:pk>/', views.deletePost, name='deletePost'),
 ]
     
+    
+    
+
+
+# urlpatterns = [
+#     path('create/', create_post, name='create_post'),
+#     path('create/', views.createPost, name='createPost'),
+# ]

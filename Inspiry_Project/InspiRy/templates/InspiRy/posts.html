@@ -50,27 +50,63 @@
             {% endif %}
             <!-- Post Footer (Stats: Comments and Likes) -->
             <div class="mt-4 flex items-center space-x-4 text-gray-500 dark:text-gray-400 text-sm">
-                <div class="flex items-center space-x-1">
-                    <a href='#'>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex items-center space-x-1"> 
+					<a href='{% url 'posts' post.id %}'>
+                    <svg  class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
                     </svg>
-                    </a>
+					</a>
                     <span>{{ post.comments_count|default:0 }}</span>
+					
                 </div>
                 <div class="flex items-center space-x-1">
-                    <a href='#'>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                    </svg>
-                    </a>
-                    <span>{{ post.likes_count|default:0 }}</span>
+                    {% if request.user.is_authenticated %}
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <input type="hidden" name="post_id" value="{{ post.id }}">
+                            <button type="submit" name="like_submit" class="flex items-center space-x-1 text-gray-500 hover:text-red-500">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                                <span>{{ post.likes_count|default:0 }}</span>
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="flex items-center space-x-1 text-gray-500 hover:text-red-500">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                            <span>{{ post.likes_count|default:0 }}</span>
+                        </a>
+                    {% endif %}
                 </div>
                 <div>
                     <span>
                         <a href='{% url 'deletePost' post.id %}' class='hover:underline'>delete</a>
                     </span>
                 </div>
+            </div>
+
+            <div class="mt-4 border-t border-gray-200 dark:border-gray-700 pt-2">
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Comments</h3>
+                {% for comment in post.comment_set.all %}
+                    <div class="mt-2 text-gray-600 dark:text-gray-300 text-sm">
+                        <span class="font-bold">{{ comment.user.username|default:'Deleted User' }}</span>: {{ comment.comment_text }}
+                    </div>
+                {% empty %}
+                    <p class="text-gray-500 dark:text-gray-400 text-sm">No comments yet.</p>
+                {% endfor %}
+                {% if request.user.is_authenticated %}
+                    <form method="post" action="" class="mt-2">
+                        {% csrf_token %}
+                        <input type="hidden" name="post_id" value="{{ post.id }}">
+                        {{ comment_form.comment_text }}
+                        {% if comment_form.errors %}
+                            <p class="text-red-500">{{ comment_form.errors.comment_text }}</p>
+                        {% endif %}
+                        <button type="submit" name="comment_submit" class="mt-1 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">Comment</button>
+                    </form>
+                {% endif %}
             </div>
         </div>
         </div>
@@ -88,6 +124,8 @@
         <section>
             {% include './footer.html' %}
         </section>
+
+
         
     </body>
 </html>

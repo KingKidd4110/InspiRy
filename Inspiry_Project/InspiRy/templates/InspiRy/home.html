@@ -55,7 +55,7 @@
             <!-- Post Footer (Stats: Comments and Likes) -->
             <div class="mt-4 flex items-center space-x-4 text-gray-500 dark:text-gray-400 text-sm">
                 <div class="flex items-center space-x-1"> 
-					<a href='#'>
+					<a href='{% url 'posts' post.id %}'>
                     <svg  class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
                     </svg>
@@ -64,16 +64,29 @@
 					
                 </div>
                 <div class="flex items-center space-x-1">
-                    <a href='#'>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                    </svg>
-                    </a>
-                    <span>{{ post.likes_count|default:0 }}</span>
+                    {% if request.user.is_authenticated %}
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <input type="hidden" name="post_id" value="{{ post.id }}">
+                            <button type="submit" name="like_submit" class="flex items-center space-x-1 text-gray-500 hover:text-red-500">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                                <span>{{ post.likes_count|default:0 }}</span>
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="flex items-center space-x-1 text-gray-500 hover:text-red-500">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                            <span>{{ post.likes_count|default:0 }}</span>
+                        </a>
+                    {% endif %}
                 </div>
                 <div>
                     <span>
-                        <a href='{% url 'deletePost' post.id% }' class='hover:underline'>delete</a>
+                        <a href='{% url 'deletePost' post.id %}' class='hover:underline'>delete</a>
                     </span>
                 </div>
             </div>
@@ -81,33 +94,44 @@
         </div>
 		{% endfor %}
 
-		{% comment %} <div class=" justify-center grid-cols-1 items-center min-h-screen border-lime-300 rounded-lg  bg-transparent p-6 gap-6  m-4 ">
+        {% if request.user.is_authenticated %}
 
-			{% for post in posts %}
-				
+            <button onclick="document.getElementById('postModal').classList.remove('hidden')" class="fixed bottom-6 right-6 bg-blue-500 text-white p-4 rounded-full shadow-lg hover:bg-blue-600 transition flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+            </button>
 
-			<div class=" container bg-gray-600 shadow-md rounded-lg hover:opacity-50 transform delay-100 sm:w-max">
-				<div class="">
-					<div class="w-12 h-12 rounded-full object-cover bg-white">
-						
-					</div>
-					<i>@{{ post.user.username }}</i>
-					<h2 class="text-black text-2xl justify-center">{{ post.title }}</h2>
-			
-			    </div>
-				<div>
-					<p >{{post.content}}</p>
-				</div>
-				
-			</div>
-			{% empty %}
-				<P class="text-white">empty</p>
-			{% endfor %}
+        {% else %}
+            <a href="{% url 'login' %}" class="fixed bottom-6 right-6 bg-blue-500 text-white p-4 rounded-full shadow-lg hover:bg-blue-600 transition flex items-center justify-center" aria-label="Log in to create a post">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+            </a>
+        {% endif %}
 
-			
-		</div> {% endcomment %}
+        {% if request.user.is_authenticated %}
+            <div id="postModal" class="hidden fixed inset-0 bg-black bg-opacity-50 items-center flex justify-center">
+                <div class="bg-gray-600 dark:bg-gray-800 p-6 rounded-lg max-w-md w-full">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">New Post</h2>
+                    <form class="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ post_form.as_p }}
+                        {% if post_form.errors %}
+                            <p class="text-red-500">{{ post_form.errors }}</p>
+                        {% endif %}
+                        <div class="flex justify-end space-x-2">
+                            <button type="button" onclick="document.getElementById('postModal').classList.add('hidden')" class="px-4 py-2 bg-gray-200 text-gray-900 rounded hover:bg-blue-600">Cancel</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
 
+        <script src="{% static 'InspiRy/js/main.js' %}"></script>
 
+		
 	</body>
 
 </html>

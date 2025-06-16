@@ -26,11 +26,21 @@
             {% block content %}
             
                 {% include './navbar.html' %}
-                <form method='POST' action="">
-                     {% csrf_token %}
-                     {{form}}
-                     <input type="submit" value="Submit" />
-                </form>
+                <div id="postModal" class="flex fixed inset-0 bg-black bg-opacity-50 items-center justify-center">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg max-w-md w-full">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">New Post</h2>
+                        <form method="post" action="{% url 'createPost' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <div class="flex justify-end space-x-2">
+                                <button type="button" onclick="document.getElementById('postModal').classList.add('hidden')" class="px-4 py-2 bg-gray-200 text-gray-900 rounded">Cancel</button>
+                                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Post</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
 
             {% endblock %}
             

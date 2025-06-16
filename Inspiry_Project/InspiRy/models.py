@@ -25,6 +25,8 @@ class Post(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     post_image= models.ImageField(upload_to="media/posts/images", null=True, blank=True)
+    comments_count = models.IntegerField(default=0)
+    likes_count = models.IntegerField(default=0)
     
     class Meta:
         ordering = ['-created_at']
@@ -40,3 +42,10 @@ class Comment(models.Model):
     def __str__(self):
         return self.comment_text
     
+
+class Like(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    class Meta:
+        unique_together = ('post', 'user')

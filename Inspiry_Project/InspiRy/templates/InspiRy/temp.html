@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-900 text-gray-100 font-['Inter'] min-h-screen">
+    <div class="max-w-2xl mx-auto p-4">
+        <!-- Header with close button -->
+        <div class="flex items-center justify-between mb-6">
+            <button class="rounded-full p-2 hover:bg-gray-800 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Post creation form -->
+        <form class="space-y-4">
+            <div class="flex gap-3">
+                <!-- Profile picture -->
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile" class="w-12 h-12 rounded-full object-cover">
+                
+                <!-- Textarea -->
+                <div class="flex-1">
+                    <textarea 
+                        class="w-full bg-transparent border-0 resize-none focus:ring-0 text-xl placeholder-gray-500 min-h-[100px]"
+                        placeholder="What's happening?"
+                        rows="3"
+                    ></textarea>
+                    
+                    <!-- Preview area (shown when media is attached) -->
+                    <div class="mt-3 rounded-xl overflow-hidden hidden" id="media-preview">
+                        <img src="" alt="Preview" class="w-full max-h-80 object-cover rounded-xl" id="preview-image">
+                        <button type="button" class="absolute top-2 right-2 bg-gray-900/80 rounded-full p-2 hover:bg-gray-800 transition" onclick="removeMedia()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- Who can reply dropdown -->
+                    <div class="mt-3 flex items-center text-blue-400 text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        <span>Everyone can reply</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Divider -->
+            <div class="border-t border-gray-800 my-3"></div>
+            
+            <!-- Action buttons -->
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4 text-blue-400">
+                    <!-- Media upload -->
+                    <label for="media-upload" class="cursor-pointer hover:bg-blue-400/10 p-2 rounded-full transition">
+                        <i class="far fa-image"></i>
+                        <input type="file" id="media-upload" class="hidden" accept="image/*" onchange="previewMedia(this)">
+                    </label>
+                    
+                    <!-- GIF -->
+                    <button type="button" class="hover:bg-blue-400/10 p-2 rounded-full transition">
+                        <i class="far fa-file-video"></i>
+                    </button>
+                    
+                    <!-- Poll -->
+                    <button type="button" class="hover:bg-blue-400/10 p-2 rounded-full transition">
+                        <i class="far fa-chart-bar"></i>
+                    </button>
+                    
+                    <!-- Emoji -->
+                    <button type="button" class="hover:bg-blue-400/10 p-2 rounded-full transition">
+                        <i class="far fa-smile"></i>
+                    </button>
+                    
+                    <!-- Schedule -->
+                    <button type="button" class="hover:bg-blue-400/10 p-2 rounded-full transition">
+                        <i class="far fa-calendar-alt"></i>
+                    </button>
+                    
+                    <!-- Location -->
+                    <button type="button" class="hover:bg-blue-400/10 p-2 rounded-full transition">
+                        <i class="far fa-map-marker-alt"></i>
+                    </button>
+                </div>
+                
+                <!-- Post button -->
+                <button 
+                    type="submit"
+                    class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition"
+                    disabled
+                    id="post-button"
+                >
+                    Post
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Enable/disable post button based on text input
+        const textarea = document.querySelector('textarea');
+        const postButton = document.getElementById('post-button');
+        
+        textarea.addEventListener('input', function() {
+            postButton.disabled = this.value.trim() === '';
+        });
+        
+        // Media preview functionality
+        function previewMedia(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const preview = document.getElementById('media-preview');
+                    const previewImage = document.getElementById('preview-image');
+                    
+                    previewImage.src = e.target.result;
+                    preview.classList.remove('hidden');
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+                postButton.disabled = false;
+            }
+        }
+        
+        function removeMedia() {
+            const preview = document.getElementById('media-preview');
+            const input = document.getElementById('media-upload');
+            
+            preview.classList.add('hidden');
+            input.value = '';
+            
+            // Disable post button if textarea is also empty
+            if (textarea.value.trim() === '') {
+                postButton.disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>
