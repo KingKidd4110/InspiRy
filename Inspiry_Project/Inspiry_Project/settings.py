@@ -137,3 +137,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 LOGIN_URL = 'templates/Inspiry/login.html'
+# settings.py (for development)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
