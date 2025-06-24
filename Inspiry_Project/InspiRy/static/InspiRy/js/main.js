@@ -27,7 +27,7 @@ if (postForm) {
         errorContainer.innerHTML = '';
 
         try {
-            const response = await fetch('{% url "homepage" %}', {
+            const response = await fetch('{% url "testPage" %}', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -59,7 +59,7 @@ document.querySelectorAll('form.comment-form, form.like-form').forEach(form => {
         errorContainer.innerHTML = '';
 
         try {
-            const response = await fetch('{% url "homepage" %}', {
+            const response = await fetch('{% url "testPage" %}', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -76,5 +76,12 @@ document.querySelectorAll('form.comment-form, form.like-form').forEach(form => {
         } catch (error) {
             errorContainer.innerHTML = 'Network error: ' + error.message;
         }
+    });
+});
+
+
+document.querySelectorAll('form.comment-form, form.like-form, form.delete-comment-form').forEach(form => {
+    handleFormSubmit(form, () => {
+        location.reload();
     });
 });

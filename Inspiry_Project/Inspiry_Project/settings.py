@@ -137,5 +137,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 LOGIN_URL = 'templates/Inspiry/login.html'
-# settings.py (for development)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# mail settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # For Gmail (or your SMTP server)
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'kingkiddtwitter@gmail.com'  # Your email
+EMAIL_HOST_PASSWORD = 'blueZ@4110'  # Use an App Password (not your main password)
+DEFAULT_FROM_EMAIL = 'ayienda.gekombe@students.kyu.ke'  # Default sender

@@ -1,13 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-from .forms import postForm, CommentForm
+from .forms import postForm, CommentForm, ContactForm
 from django.db.models import Q
-from django import forms
-# from django.http import HttpResponse
+from django.core.mail import send_mail
+from django.http import HttpResponse, JsonResponse
 # from django.template import loader
  
 # Create your views here.
@@ -215,7 +215,34 @@ def deletePost(request, pk):
         post.delete()
         return redirect('testPage')
     return render(request, 'InspiRy/delete.html', {'obj':post})
+
+
+def delete_comment(request, comment_id):
+    if not request.user.is_authenticated:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'errors': 'Please log in to delete comments.'}, status=403)
+        return redirect('login')
+
+    comment = get_object_or_404(Comment, id=comment_id, user=request.user)
     
+    if request.method == 'POST':
+        post = comment.post
+        post_id = post.id if post else None
+        comment.delete()
+        if post:
+            post.comments_count = max(0, post.comments_count - 1)
+            post.save()
+        
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            # Return the redirect URL for AJAX to handle
+            redirect_url = reverse('posts', kwargs={'pk': post_id}) if post_id else reverse('testPage')
+            return JsonResponse({'status': 'success', 'redirect': redirect_url}, status=200)
+        
+        return redirect('posts', pk=post_id) if post_id else redirect('testPage')
+    
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({'errors': 'Invalid request method.'}, status=405)
+    return redirect('testPage')
 
 
 # class PostForm(forms.Form):
@@ -271,10 +298,35 @@ def search_posts(request):
 
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return render(request, 'partials/post_list.html', {'posts': posts})  # Partial template
-    return render(request, 'homepage.html', {
+    return render(request, 'InspiRy/home.html', {
         'posts': posts,
         'username': request.user.username if request.user.is_authenticated else 'Guest',
         'post_form': post_form,
         'comment_form': comment_form,
         'search_query': query,
     })
+
+
+# views.py
+
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+
+            # Send email
+            send_mail(
+                f"New message from {name} ({email})",  # Subject
+                message,  # Message
+                email,  # From email
+                ['your-email@gmail.com'],  # To email (your email)
+                fail_silently=False,
+            )
+            return redirect('success_page')  # Redirect after success
+    else:
+        form = ContactForm()
+    return render(request, 'InspiRy/contact.html', {'form': form})

@@ -9,6 +9,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		{% tailwind_css %}
+        <script src="{% static 'InspiRy/js/jquery.min.js' %}"></script>
+        <script src="{% static 'InspiRy/js/main.js' %}"></script>
 	</head>
     <body class="bg-gray-900">
         <section>
@@ -97,12 +99,26 @@
             <div class="mt-4 border-t border-gray-200 dark:border-gray-700 pt-2">
                 <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Comments</h3>
                 {% for comment in post.comment_set.all %}
-                    <div class="mt-2 text-gray-600 dark:text-gray-300 text-sm">
-                        <span class="font-bold">{{ comment.user.username|default:'Deleted User' }}</span>: {{ comment.comment_text }}
+                    <div class="mt-2 text-gray-600 dark:text-gray-300 text-sm flex items-center justify-between">
+                        <div>
+                            <span class="font-bold">{{ comment.user.username|default:'Deleted User' }}</span>: {{ comment.comment_text }}
+                        </div>
+                        {% if request.user.is_authenticated and request.user == comment.user %}
+                            <form method="post" action="{% url 'delete_comment' comment.id %}" class="delete-comment-form">
+                                {% csrf_token %}
+                                <button type="submit" class="text-gray-500 hover:text-red-500" title="Delete comment" aria-label="Delete comment">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        {% endif %}
                     </div>
                 {% empty %}
                     <p class="text-gray-500 dark:text-gray-400 text-sm">No comments yet.</p>
                 {% endfor %}
+                                
+
                 {% if request.user.is_authenticated %}
                     <form method="post" action="" class="mt-2 rounded-md flex h-12 gap-4">
                         {% csrf_token %}
@@ -117,7 +133,7 @@
                 {% endif %}
             </div>
         </div>
-        <script src="{% static 'InspiRy/js/main.js' %}"></script>
+        
         </div>
 
         {% comment %} <section id="postTitle" class="flex-auto text-center rounded-md text-white m-2 text-bold text-2xl bg-gray-700 shadow-md">

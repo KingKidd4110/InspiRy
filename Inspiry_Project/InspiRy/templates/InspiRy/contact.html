@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+{% load static tailwind_tags %}
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InspiRy Inc. | About Us</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="{% static 'InspiRy/js/jquery.min.js' %}"></script>
+    <style>
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .active-tab {
+            border-bottom: 2px solid #3B82F6;
+            color: #3B82F6;
+        }
+    </style>
+    {% tailwind_css %}
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans">
+
+    <div >
+        {% block content %}
+
+            {% include './navbar.html' %}
+
+        {% endblock %}
+    </div>
+    <!-- Navigation -->
+    <nav class="bg-gray-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                
+                <div class="block">
+                    <div class="ml-10 flex items-center space-x-4 ">
+                        <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 transition active-tab" id="about-tab">About</a>
+                        <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 transition" id="team-tab">Our Team</a>
+                        <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 transition" id="faq-tab">FAQs</a>
+                        <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 transition" id="blog-tab">Blog</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content (Dynamically Loaded via AJAX) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div id="content" class="fade-in">
+            <!-- Default: About Us Section -->
+            <section id="about-section">
+                <h1 class="text-4xl font-bold text-blue-400 mb-6">About InspiRy Inc.</h1>
+                <p class="text-gray-300 mb-6">
+                    Founded in 2025, InspiRy Inc. is a leading provider of innovative software solutions for businesses worldwide. 
+                    Our mission is to empower organizations with cutting-edge technology that drives efficiency and growth.
+                </p>
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+                        <h2 class="text-xl font-semibold text-blue-400 mb-3">Our Vision</h2>
+                        <p class="text-gray-300">
+                            To be the global leader in AI-driven enterprise solutions by 2030, transforming how businesses operate.
+                        </p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+                        <h2 class="text-xl font-semibold text-blue-400 mb-3">Our Values</h2>
+                        <ul class="list-disc pl-5 text-gray-300">
+                            <li>Innovation</li>
+                            <li>Customer-Centric Approach</li>
+                            <li>Transparency</li>
+                            <li>Continuous Learning</li>
+                        </ul>
+                    </div>
+                
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                        <h2 class="text-2xl font-semibold text-blue-400 mb-4">Our Journey</h2>
+                        <p class="text-gray-300">
+                            From a small startup in Silicon Valley to a multinational corporation serving Fortune 500 companies, 
+                            our journey has been fueled by passion and relentless innovation.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <span class="text-blue-400 text-lg font-bold">InspiRy.</span>
+                    <p class="text-gray-400 mt-2">© 2025 All Rights Reserved</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition"><i class="fab fa-linkedin fa-lg"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition"><i class="fab fa-github fa-lg"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'InspiRy/js/contact.js' %}"></script>
+
+    <!-- AJAX Script to Load Content Dynamically -->
+    
+</body>
+</html>
