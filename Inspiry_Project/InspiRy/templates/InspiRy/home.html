@@ -9,6 +9,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		{% tailwind_css %}
+        <script src="{% static 'InspiRy/js/main.js' %}"></script>
+        <script src="{% static 'InspiRy/js/jquery.min.js' %}"></script>
 	</head>
 
     <body id="home" class="bg-gray-900 font-serif leading-normal tracking-normal">
@@ -18,9 +20,13 @@
 
         </div> -->
 		<div class="container border-lime-300 rounded-md bg-transparent border-double m-2">
-			<p class="text-bold text-white lg:text-center sm:text-left text-3xl"> Latest Posts </p>
+			<p class="text-bold text-white lg:text-center sm:text-center text-3xl"> Latest Posts </p>
 
 		</div>
+
+        {% if search_query %}
+    		<p class="mt-2 text-center text-gray-600 dark:text-gray-400">Showing results for "{{ search_query }}"</p>
+		{% endif %}
 
 		{% for post in posts %}
 
@@ -97,6 +103,16 @@
             </div>
         </div>
         </div>
+
+        {% empty %}
+            <p class="text-gray-500 text-center dark:text-gray-400">
+                {% if search_query %}
+                    No results found for "{{ search_query }}".
+                {% else %}
+                    No posts available.
+                {% endif %}
+            </p>
+
 		{% endfor %}
 
         {% if request.user.is_authenticated %}
@@ -133,8 +149,6 @@
                 </div>
             </div>
         {% endif %}
-
-        <script src="{% static 'InspiRy/js/main.js' %}"></script>
 
 		
 	</body>

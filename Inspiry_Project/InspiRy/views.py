@@ -13,28 +13,6 @@ from django.http import HttpResponse, JsonResponse
 # Create your views here.
 
 
-# def testPage(request):
-#     if request.method == 'POST':
-#         if not request.user.is_authenticated:
-#             return redirect('login')  # Redirect to login if not authenticated
-#         form = postForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             post = form.save(commit=False)
-#             post.user = request.user
-#             post.save()
-#             return redirect('testPage')  # Stay on homepage after submission
-#     else:
-#         form = postForm()
-    
-#     posts = Post.objects.select_related('user').all()  # Fetch all posts, optimize user
-#     return render(request, 'InspiRy/base.html', {
-#         'posts': posts,
-#         'username': request.user.username if request.user.is_authenticated else 'Guest',
-#         'form': form  # Pass form to modal
-#     })
-    
-# views.py
-
 def testPage(request):
     
     post_form = postForm()
@@ -97,10 +75,6 @@ def testPage(request):
 def homePage(request):
     return render(request, 'InspiRy/home.html')
 
-# def posts_page(request, pk):
-#     post = Post.objects.get(id=pk)
-#     context = {'post' : post}
-#     return render(request, 'InspiRy/posts.html', context)
 
 def postPage(request, pk):
     comment_form = CommentForm()
@@ -124,7 +98,7 @@ def postPage(request, pk):
                     comment.post.save()
                 except Post.DoesNotExist:
                     pass
-                return redirect('postPage',  id=pk)# Fetch all fields, optimize user
+                return redirect('posts', pk=post_id) if post_id else redirect('testPage')# Fetch all fields, optimize user
             
         elif 'like_submit' in request.POST:
             post_id = request.POST.get('post_id')
@@ -137,7 +111,7 @@ def postPage(request, pk):
                         post.save()
                 except Post.DoesNotExist:
                     pass
-                return redirect('postPage', id=pk)
+                return redirect('posts', pk=post_id) if post_id else redirect('testPage')
     return render(request, 'InspiRy/posts.html', {
         'post': post,
         'username': request.user.username if request.user.is_authenticated else 'Guest',
@@ -202,9 +176,6 @@ def register_view(request):
     
     return render(request, 'InspiRy/register.html')  
 
-# for post in Post.objects.all():
-#         print(post.title)
-
 
 
 
@@ -245,42 +216,8 @@ def delete_comment(request, comment_id):
     return redirect('testPage')
 
 
-# class PostForm(forms.Form):
-#     content = forms.CharField(widget=forms.Textarea(attrs={
-#         'class': 'w-full bg-transparent border-0 resize-none focus:ring-0 text-xl placeholder-gray-500 min-h-[100px]',
-#         'placeholder': "What's happening?",
-#         'rows': 3
-#     }), required=False)
-#     media = forms.ImageField(required=False)
 
-# def create_post(request):
-#     media_preview_url = None
-#     post_button_disabled = True
-    
-#     if request.method == 'POST':
-#         form = PostForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             # Process the post (save to database, etc.)
-#             return redirect('testPage')  # Redirect after successful post
-    
-#     else:
-#         form = PostForm()
-    
-#     # Check if form has content to enable/disable button
-#     if 'content' in request.POST and request.POST['content'].strip() != '':
-#         post_button_disabled = False
-#     elif 'media' in request.FILES:
-#         post_button_disabled = False
-    
-#     # Handle media preview
-#     if 'media' in request.FILES:
-#         media_preview_url = request.FILES['media'].temporary_file_path()
-    
-#     return render(request, 'InspiRy/create.html', {
-#         'form': form,
-#         'media_preview_url': media_preview_url,
-#         'post_button_disabled': post_button_disabled
-#     })
+
 
 def search_posts(request):
     post_form = postForm()
@@ -292,13 +229,12 @@ def search_posts(request):
         posts = posts.filter(
             Q(title__icontains=query) |
             Q(content__icontains=query) |
-            Q(user__username__icontains=query) |
-            Q(comment_set__comment_text__icontains=query)
+            Q(user__username__icontains=query)
         ).distinct()
 
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return render(request, 'partials/post_list.html', {'posts': posts})  # Partial template
-    return render(request, 'InspiRy/home.html', {
+    return render(request, 'InspiRy/base.html', {
         'posts': posts,
         'username': request.user.username if request.user.is_authenticated else 'Guest',
         'post_form': post_form,
@@ -330,3 +266,7 @@ def contact_view(request):
     else:
         form = ContactForm()
     return render(request, 'InspiRy/contact.html', {'form': form})
+
+
+def etc_view(request):
+    return render(request, 'InspiRy/etc.html')
