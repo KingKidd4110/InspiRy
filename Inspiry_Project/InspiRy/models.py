@@ -3,6 +3,8 @@ import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 # Create your models here.
 
 # class User(models.Model):
@@ -17,6 +19,9 @@ from django.db.models.deletion import CASCADE
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='media/profiles/images', null=True, blank=True)
+    bio = models.CharField(max_length=200, blank=True, null=True)
+    birthday = models.DateField(blank=True, null=True)
+    social_link = models.CharField(max_length=20, blank=True, null=True)
 
 class Post(models.Model):
     
@@ -49,3 +54,4 @@ class Like(models.Model):
     
     class Meta:
         unique_together = ('post', 'user')
+

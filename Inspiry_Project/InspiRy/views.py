@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-from .forms import postForm, CommentForm, ContactForm
+from .forms import postForm, CommentForm, ContactForm, ProfileForm
 from django.db.models import Q
 from django.core.mail import send_mail
 from django.http import HttpResponse, JsonResponse
@@ -124,10 +124,19 @@ def footerPage(request):
 def navigationPage(request):
     return render(request, 'InspiRy/navbar.html')
 
-@login_required(login_url='/InspiRy/login.html')
-def userprofilePage(request):
-    user = request.user.username
-    posts = Post.objects.all()
+
+def userprofilePage(request, pk):
+    user = User.objects.get(id=pk)
+    posts = user.post_set.all()
+    
+    def postCount():
+        userPosts = 0
+        for post in posts:
+            userPosts + 1
+            
+        return userPosts     
+        
+    
     context = { 'user' : user, 'posts': posts}
     return render(request, 'InspiRy/profile.html', context)
 
@@ -172,6 +181,7 @@ def register_view(request):
         user.save()
         messages.success(request, "Your Account was successfully")
         user = authenticate(username=username, password=password)
+        login(request, user)
         return redirect('/')
     
     return render(request, 'InspiRy/register.html')  
@@ -270,3 +280,24 @@ def contact_view(request):
 
 def etc_view(request):
     return render(request, 'InspiRy/etc.html')
+
+
+@login_required
+def edit_profile(request):
+    # Ensure a Profile exists for the user
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        # Update fields
+        profile.bio = request.POST.get('bio', '')
+        profile.birthday = request.POST.get('birthday') or None
+        profile.social_link = request.POST.get('social_link', '')
+        
+        # Handle profile picture upload
+        if 'profile_picture' in request.FILES:
+            profile.profile_picture = request.FILES['profile_picture']
+        
+        profile.save()
+        return redirect('userprofile', pk=request.user.id)
+    
+    return redirect('testPage')

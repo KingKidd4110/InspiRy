@@ -19,10 +19,12 @@
             <h2 class="text-center">It's Great, Just like you thought it!</h2>
 
         </div> -->
-		<div class="container border-lime-300 rounded-md bg-transparent border-double m-2">
-			<p class="text-bold text-white lg:text-center sm:text-center text-3xl"> Latest Posts </p>
+        {% if not search_query %}
+            <div class="container border-lime-300 rounded-md bg-transparent border-double m-2">
+                <p class="text-bold text-white lg:text-center sm:text-center text-3xl"> Latest Posts </p>
 
-		</div>
+            </div>
+        {% endif %}
 
         {% if search_query %}
     		<p class="mt-2 text-center text-gray-600 dark:text-gray-400">Showing results for "{{ search_query }}"</p>
@@ -34,10 +36,10 @@
         <div class="max-w-xl w-full bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-4">
             <!-- Post Header -->
             <div class="flex items-center space-x-3">
-                <img src="{{ post.user.profile_picture.url}}" alt="Profile" class="w-12 h-12 rounded-full object-cover">
+                <img src="{{ post.user.profile.profile_picture.url}}" alt="Profile" class="w-12 h-12 rounded-full object-cover">
                 <div>
                     <div class="flex items-center space-x-1">
-                        <a href={% url 'userprofile' %}>
+                        <a href={% url 'userprofile' post.user.id %}>
                         <span class="font-bold text-gray-900 dark:text-gray-100 hover:underline">
                             {% if request.user.is_authenticated and request.user == post.user %}
                                 {{ username }} (You)

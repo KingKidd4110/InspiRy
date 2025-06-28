@@ -17,16 +17,16 @@ $(document).ready(function() {
         if (section === 'about') {
             content = `
                 <section id="about-section" class="fade-in">
-                    <h1 class="text-4xl font-bold text-blue-400 mb-6">About TechSolutions Inc.</h1>
+                    <h1 class="text-4xl font-bold text-blue-400 mb-6">About InspiRy Inc.</h1>
                     <p class="text-gray-300 mb-6">
-                        Founded in 2015, TechSolutions Inc. is a leading provider of innovative software solutions for businesses worldwide. 
-                        Our mission is to empower organizations with cutting-edge technology that drives efficiency and growth.
+                        Founded in 2025, InspiRy Inc. is a leading free speech platform worldwide. 
+                        Our mission is to empower people to speak their minds with courage.
                     </p>
                     <div class="grid md:grid-cols-2 gap-8 mb-12">
                         <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
                             <h2 class="text-xl font-semibold text-blue-400 mb-3">Our Vision</h2>
                             <p class="text-gray-300">
-                                To be the global leader in AI-driven enterprise solutions by 2030, transforming how businesses operate.
+                                To be the global leader in free speech and enterprise solutions by 2030, transforming how businesses and communications operate.
                             </p>
                         </div>
                         <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
@@ -42,7 +42,7 @@ $(document).ready(function() {
                     <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
                         <h2 class="text-2xl font-semibold text-blue-400 mb-4">Our Journey</h2>
                         <p class="text-gray-300">
-                            From a small startup in Silicon Valley to a multinational corporation serving Fortune 500 companies, 
+                            From a small student startup project to a multinational corporation serving Fortune 500 companies, 
                             our journey has been fueled by passion and relentless innovation.
                         </p>
                     </div>
@@ -56,22 +56,10 @@ $(document).ready(function() {
                     <p class="text-gray-300 mb-8">Meet the brilliant minds behind our success.</p>
                     <div class="grid md:grid-cols-3 gap-6">
                         <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="CEO" class="w-24 h-24 rounded-full mx-auto mb-4">
-                            <h3 class="text-xl font-semibold text-center text-blue-400">John Doe</h3>
+                            <img src="{% static '/InspiRy/resized_passport.jpg' %}" alt="CEO" class="w-24 h-24 rounded-full mx-auto mb-4">
+                            <h3 class="text-xl font-semibold text-center text-blue-400">Ayienda Brian</h3>
                             <p class="text-gray-400 text-center mb-2">CEO & Founder</p>
                             <p class="text-gray-300 text-center">10+ years in tech leadership</p>
-                        </div>
-                        <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="CTO" class="w-24 h-24 rounded-full mx-auto mb-4">
-                            <h3 class="text-xl font-semibold text-center text-blue-400">Jane Smith</h3>
-                            <p class="text-gray-400 text-center mb-2">CTO</p>
-                            <p class="text-gray-300 text-center">AI & Machine Learning Expert</p>
-                        </div>
-                        <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Lead Developer" class="w-24 h-24 rounded-full mx-auto mb-4">
-                            <h3 class="text-xl font-semibold text-center text-blue-400">Mike Johnson</h3>
-                            <p class="text-gray-400 text-center mb-2">Lead Developer</p>
-                            <p class="text-gray-300 text-center">Full-Stack Wizard</p>
                         </div>
                     </div>
                 </section>
@@ -85,13 +73,13 @@ $(document).ready(function() {
                         <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
                             <h3 class="text-xl font-semibold text-blue-400 mb-2">What services do you offer?</h3>
                             <p class="text-gray-300">
-                                We provide custom software development, AI solutions, cloud computing, and cybersecurity services.
+                                We provide advertisement services on InspiRy, Email us if you need such services.
                             </p>
                         </div>
                         <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
                             <h3 class="text-xl font-semibold text-blue-400 mb-2">How can I contact support?</h3>
                             <p class="text-gray-300">
-                                Email us at <span class="text-blue-400">support@techsolutions.com</span> or call +1 (555) 123-4567.
+                                Email us at <span class="text-blue-400">ayiendabrian@gmail.com.com</span> or call +254 (790) 669-459.
                             </p>
                         </div>
                         <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
@@ -107,23 +95,23 @@ $(document).ready(function() {
         else if (section === 'blog') {
             content = `
                 <section id="blog-section" class="fade-in">
-                    <h1 class="text-4xl font-bold text-blue-400 mb-6">Latest Updates</h1>
+                    <h1 class="text-4xl font-bold text-blue-400 mb-6">Contact Us</h1>
                     <div class="grid md:grid-cols-2 gap-8">
                         <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-                            <h3 class="text-xl font-semibold text-blue-400 mb-2">Why AI is the Future of Business</h3>
-                            <p class="text-gray-400 mb-3">Published on May 15, 2023</p>
+                            <h3 class="text-xl font-semibold text-blue-400 mb-2">Email Our Suppport team or Developers</h3>
+                            <p class="text-gray-400 mb-3">Email InspiRy on:</p>
                             <p class="text-gray-300">
-                                Artificial Intelligence is revolutionizing industries. Here’s how your business can adapt.
+                                ayiendabrian@gmail.com
                             </p>
-                            <a href="#" class="text-blue-400 hover:underline mt-3 inline-block">Read More →</a>
+                            <a href="#" class="text-blue-400 hover:underline mt-3 inline-block">More →</a>
                         </div>
                         <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-                            <h3 class="text-xl font-semibold text-blue-400 mb-2">Top Cybersecurity Trends in 2023</h3>
-                            <p class="text-gray-400 mb-3">Published on April 28, 2023</p>
+                            <h3 class="text-xl font-semibold text-blue-400 mb-2">Reach Our Support Desk</h3>
+                            <p class="text-gray-400 mb-3">Call or WhatsApp</p>
                             <p class="text-gray-300">
-                                Stay ahead of threats with these emerging cybersecurity strategies.
+                                +254790669459
                             </p>
-                            <a href="#" class="text-blue-400 hover:underline mt-3 inline-block">Read More →</a>
+                            <a href="#" class="text-blue-400 hover:underline mt-3 inline-block">More →</a>
                         </div>
                     </div>
                 </section>
