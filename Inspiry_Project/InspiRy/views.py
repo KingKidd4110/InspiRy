@@ -124,20 +124,20 @@ def footerPage(request):
 def navigationPage(request):
     return render(request, 'InspiRy/navbar.html')
 
+def get_user_post_count(user):
+    if isinstance(user, User):
+        return Post.objects.filter(user=user).count()
+    else:
+        return Post.objects.filter(user_id=user).count()
+
 
 def userprofilePage(request, pk):
     user = User.objects.get(id=pk)
+    post_count = get_user_post_count(user)
     posts = user.post_set.all()
-    
-    def postCount():
-        userPosts = 0
-        for post in posts:
-            userPosts + 1
-            
-        return userPosts     
         
     
-    context = { 'user' : user, 'posts': posts}
+    context = { 'user' : user, 'posts': posts, 'post_count' : post_count }
     return render(request, 'InspiRy/profile.html', context)
 
 def login_view(request):

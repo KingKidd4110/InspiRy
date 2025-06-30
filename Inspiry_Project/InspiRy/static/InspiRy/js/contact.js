@@ -56,7 +56,7 @@ $(document).ready(function() {
                     <p class="text-gray-300 mb-8">Meet the brilliant minds behind our success.</p>
                     <div class="grid md:grid-cols-3 gap-6">
                         <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-                            <img src="{% static '/InspiRy/resized_passport.jpg' %}" alt="CEO" class="w-24 h-24 rounded-full mx-auto mb-4">
+                            <img src="../static/InspiRy/resized_passport.jpg" alt="CEO" class="w-24 h-24 rounded-full mx-auto mb-4">
                             <h3 class="text-xl font-semibold text-center text-blue-400">Ayienda Brian</h3>
                             <p class="text-gray-400 text-center mb-2">CEO & Founder</p>
                             <p class="text-gray-300 text-center">10+ years in tech leadership</p>
